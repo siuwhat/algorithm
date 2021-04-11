@@ -4,22 +4,28 @@ using namespace std;
 
  class Union {
 public:
-	Union(size_t size = 10) :SIZE(size) { parent = vector<int>(SIZE); for (auto i = 0; i < SIZE; ++i)parent[i]=i; }
-	vector<int>parent;
+	Union(size_t size = 10) :SIZE(size) { parent = vector<int>(SIZE); for (auto i = 0; i < SIZE; ++i)parent[i]=i; }	
 	void union_element(int source, int destination);
 	bool if_connected(int first,int second);
 	size_t count() { return SIZE; }
 	int find();
-	void traverse() { for (auto i = 0; i < SIZE; ++i) cout << parent[i] << ends; }
+	void traverse() { for (auto i = 0; i < SIZE; ++i) cout << parent[i] << ends; cout << endl; }
 private:
 	size_t SIZE;
+	vector<int>parent;
 };
  void Union::union_element(int destination, int source) {
-	 int temp = parent[destination];
-	 if(!if_connected(destination,source))parent[destination] = parent[source];
-	 for (auto i = 0; i < SIZE; ++i)if (parent[i] == temp)parent[i] = parent[source];
+	 if (!if_connected(destination, source)) {
+		 while (parent[source] != source)source = parent[source];
+		 while (parent[destination] != destination)destination = parent[destination];
+		 parent[destination] = source;
+	 }
+	 traverse();
  }
- bool Union::if_connected(int first, int second) { if (parent[first] == parent[second])return true; else return false; }
+ bool Union::if_connected(int first, int second) {
+	 while (parent[first] != first) { first = parent[first]; }
+	 while (parent[second] != second) { second = parent[second]; }
+	 return first==second?true:false; }
 int main()
 {
 	Union a;
@@ -31,7 +37,9 @@ int main()
 	a.union_element(5, 0);
 	a.union_element(7, 2);
 	a.union_element(6, 1);
-	a.traverse();
+	a.union_element(7, 3);
+
+	
 
 	
 }
