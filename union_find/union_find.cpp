@@ -10,16 +10,16 @@ public:
 	size_t count() { return SIZE; }
 	int find();
 	void traverse() { for (auto i = 0; i < SIZE; ++i) cout << parent[i] << ends; cout << endl; }
-	vector<int>weight;
+	
 private:
 	size_t SIZE;
 	vector<int>parent;
-	
+	vector<int>weight;
 };
  void Union::union_element(int destination, int source) {
 	 if (!if_connected(destination, source)) {
-		 while (parent[source] != source)source = parent[source];
-		 while (parent[destination] != destination)destination = parent[destination];
+		 while (parent[source] != source) { parent[source] = parent[parent[source]]; source = parent[source]; }
+		 while (parent[destination] != destination) { parent[destination]=parent[parent[destination]]; destination = parent[destination]; }
 		 if (weight[source] >= weight[destination])
 		 {
 			 parent[destination] = source;	
@@ -51,7 +51,7 @@ int main()
 	a.union_element(7, 2);
 	a.union_element(1, 6);
 	a.union_element(7, 3);
-	
+	a.union_element(4, 6);
 	
 
 	
