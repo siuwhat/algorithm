@@ -22,14 +22,12 @@ public:
     Node<T>* tail;
      Node<T> begin()  { return *head; }
      Node<T> end() {
-         tail=tail->next = new Node<T>;
-         return *tail;
-
+        return tail->next==nullptr?*(tail->next = new Node<T>):*tail->next; 
+        
      }
      void add(T data) {
          if (is_empty()) { head->data = data; }
          else {
-             
              auto oldNode = head;
              head = new Node<T>(data);
              head->next = oldNode;
@@ -46,12 +44,20 @@ private:
 
 int main()
 {
+    int n=0;
     bag<int> a;
     a.add(100);
     a.add(200);
-    a.add(300);
-    a.add(400);
+    for (auto i : a)
+        cout << i << ends;
+    cout << endl;
+    a.add(1);
+    a.add(3);
+    a.add(5);
     for (auto i : a)
         cout << i << endl;
+    
+   
+   
 }
 
