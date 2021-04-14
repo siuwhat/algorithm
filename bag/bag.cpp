@@ -9,7 +9,7 @@ public:
     Node(T data):data(data){}
     Node<T>* next = NULL;
    T operator*() const { return this->data; }
-   constexpr bool operator!=(Node<T> user) const { return (*user) != this->data; }
+   constexpr bool operator!=(const Node<T> &user) const { return (*user) != this->data; }
    Node<T>& operator++() { *this = *this->next; return *this; }
     T data;
 };
@@ -37,6 +37,16 @@ public:
      }
      constexpr bool is_empty()const { return size()==0; };
     constexpr size_t size() const{ return SIZE; }
+    ~bag()
+    {
+        auto i = head->next;
+        auto j = head;
+        while (i) {
+            delete j;
+            j = i;
+            i = i->next;
+        }
+    }
 private:
      size_t SIZE=0;
 };
