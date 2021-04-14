@@ -8,8 +8,8 @@ public:
     Node() = default;
     Node(T data):data(data){}
     Node<T>* next = NULL;
-   T operator*() { return this->data; }
-   bool operator!=(Node<T> user) const { return (*user) != this->data; }
+   T operator*() const { return this->data; }
+   constexpr bool operator!=(Node<T> user) const { return (*user) != this->data; }
    Node<T>& operator++() { *this = *this->next; return *this; }
     T data;
 };
@@ -20,10 +20,9 @@ public:
     bag() = default;
     Node<T>* head=new Node<T>;
     Node<T>* tail;
-     Node<T> begin()  { return *head; }
-     Node<T> end() {
+    constexpr Node<T> begin() const { return *head; }
+    constexpr Node<T> end()  const {
         return tail->next==nullptr?*(tail->next = new Node<T>):*tail->next; 
-        
      }
      void add(T data) {
          if (is_empty()) { head->data = data; }
@@ -36,8 +35,8 @@ public:
          }
          SIZE++;
      }
-     bool is_empty()const { return size()==0; };
-    size_t size() const{ return SIZE; }
+     constexpr bool is_empty()const { return size()==0; };
+    constexpr size_t size() const{ return SIZE; }
 private:
      size_t SIZE=0;
 };
@@ -54,10 +53,9 @@ int main()
     a.add(1);
     a.add(3);
     a.add(5);
+   
     for (auto i : a)
-        cout << i << endl;
-    
-   
-   
+        cout << i << ends;
+    cout << endl;
 }
 
