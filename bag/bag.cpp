@@ -22,10 +22,11 @@ public:
     Node<T>* tail;
     constexpr Node<T> begin() const { return *head; }
     constexpr Node<T> end()  const {
-        return tail->next==nullptr?*(tail->next = new Node<T>):*tail->next; 
+      
+        return *tail->next;
      }
      void add(T data) {
-         if (is_empty()) { head->data = data; }
+         if (is_empty()) { head->data = data; tail = head; tail->next = new Node<T>; }
          else {
              auto oldNode = head;
              head = new Node<T>(data);
@@ -56,10 +57,6 @@ int main()
     int n=0;
     bag<int> a;
     a.add(100);
-    a.add(200);
-    for (auto i : a)
-        cout << i << ends;
-    cout << endl;
     a.add(1);
     a.add(3);
     a.add(5);
@@ -67,5 +64,8 @@ int main()
     for (auto i : a)
         cout << i << ends;
     cout << endl;
+  
+   
+  
 }
 
