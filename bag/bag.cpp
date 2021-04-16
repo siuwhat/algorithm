@@ -22,7 +22,6 @@ public:
     Node<T>* tail;
     constexpr Node<T> begin() const { return *head; }
     constexpr Node<T> end()  const {
-      
         return *tail->next;
      }
      void add(T data) {
