@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="insert_sort.cpp" />
+    <ClCompile Include="quick_sort.cpp" />
     <ClCompile Include="select_sort.cpp" />
     <ClCompile Include="shell_sort.cpp" />
   </ItemGroup>

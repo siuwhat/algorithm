@@ -24,6 +24,9 @@
     <ClCompile Include="shell_sort.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="quick_sort.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="test_if_sorted.hpp">
