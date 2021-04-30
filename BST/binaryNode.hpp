@@ -6,7 +6,6 @@ template<class T>struct binaryNode {
 	binaryNode<T>* father;
 	binaryNode<T>* lson;
 	binaryNode<T>* rson;
-	~binaryNode() { delete lson; delete rson; }
 	T data;
 	//auto insertls(T data) {
 	//	return lson = new binaryNode<T>(data, this);
@@ -19,8 +18,8 @@ template<class T>struct binaryNode {
 	//	delete lson;
 	//	delete this;
 	//}
-	bool operator<(const binaryNode<T>* node) { return node->data < data; }
+	/*bool operator<(const binaryNode<T>* node) { return node->data < data; }
 	bool operator>(const binaryNode<T>* node) { return !(node < this); }
-	bool operator==(const binaryNode<T>* node) { return data == node->data; }
+	bool operator==(const binaryNode<T>* node) { return data == node->data; }*/
 
 };
