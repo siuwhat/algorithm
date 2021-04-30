@@ -6,13 +6,14 @@ using namespace std;
 template<typename T>
 class BST {
 public:
-    BST() { sz = hi = 0; top = NULL; }
+    BST() { sz = hi = 0; top = NULL; }//初始化
     void insert(const T& data);
     void insert(const initializer_list<T>& data_list) { for (auto i : data_list)insert(i); }
     void remove(const T& data);
     void remove(binaryNode<T>*node);
     constexpr binaryNode<T>* root() const { return top; }
-    void inorder_traverse  (const binaryNode<T>* node)   {
+    void inorder_traverse  (const binaryNode<T>* node/*=root()*/)   //中序遍历了解结构，这里不能用默认参数root()
+    {
         if (!node)return;
         inorder_traverse(node->lson);
         cout << node->data << " ";
@@ -25,36 +26,37 @@ public:
 此时编译器无法确认函数参数的默认值是多少。
 而标准这样做就把错误的发现提前到编译期。
  */
-   binaryNode<T>* floor(const T& data);
-   binaryNode<T>* ceil (const T& data);
-   binaryNode<T>* max(binaryNode<T>*node) const{  while (node->rson)node = node->rson; return node; }
-   binaryNode<T>* min(binaryNode<T>*node) const{  while (node->lson)node = node->lson; return node; }
+   binaryNode<T>* floor(const T& data);//小于等于data的元素
+   binaryNode<T>* ceil (const T& data);//大于等于data的元素
+   binaryNode<T>* max(binaryNode<T>*node) const{  while (node->rson)node = node->rson; return node; }//一个节点当做个子树看,最大的元素
+   binaryNode<T>* min(binaryNode<T>*node) const{  while (node->lson)node = node->lson; return node; }//一个节点当做个子树看,最小的元素
     constexpr int size() const{ return sz; }
     constexpr int height() const { return hi; }
     binaryNode<T>* find(const T&data) 
     {
         if (auto node = find_it(data))return node; else { cout << "we can't find it!"; abort(); }
     }
+    //通过find_it(data)获得准确的节点在哪，如果为空，程序截止
     ~BST() 
     {
         traverse(top);
-    }
+    }//遍历删除元素
 private:
     void traverse(binaryNode<T>* node) { if (node) { traverse(node->lson); traverse(node->rson); delete node; } }
     binaryNode<T>* find_it(const T& data);
     binaryNode<T>* search(const T& data);
-    void swap(binaryNode<T>* left, binaryNode<T>* right) { auto t = left->data; left->data = right->data; right->data = t; }
-    constexpr bool is_exist(const binaryNode<T>* node) const { return node->lson || node->rson; }
+    void swap(binaryNode<T>* left, binaryNode<T>* right) { auto t = left->data; left->data = right->data; right->data = t; }//只交换元素不交换指针
+    constexpr bool is_exist(const binaryNode<T>* node) const { return node->lson || node->rson; }//判断双节点是否存在不存在返回false；
     int checksz(const binaryNode<T>*node) const
     {
         if (!node)return 0;
         return checksz(node->lson) + checksz(node->rson) + 1;
-    }
+    }//遍历检查各个子树的size
     int checkhi(const binaryNode<T>* node) const
     {
         if(!node)return 0;
         return  std::max(checkhi(node->lson),checkhi(node->rson)) + 1;
-    }
+    }//遍历检查各个子树的height
 
     void remove_leaf(binaryNode<T>* node)
     {
@@ -66,7 +68,7 @@ private:
         }
         else top = NULL;
         delete node;
-    }
+    }//删除叶子节点，如果是top，则置为空树。
     void remove_one(binaryNode<T>* node)
     {
         if (node != top) {
@@ -103,13 +105,13 @@ private:
             
         }
         delete node;
-    }
+    }//删除一个节点，该节点只有一个子树，该节点的父亲指向节点之子
     void remove_both(binaryNode<T>* node)
     {
         binaryNode<T>* temp = min(node->rson);
         BST<T>::swap(temp, node);
         remove(temp);
-    }
+    }//不写交换而要考虑很多情况，所以为了方便。只转移数据
 
     int sz;
     int hi;
@@ -194,11 +196,15 @@ template<typename T> binaryNode<T>* BST<T>::ceil(const T& data)
     return close;
 }
 
-template<typename T> void BST<T>::insert(const T& data) {
+template<typename T> void BST<T>::insert(const T& data) {//利用BST的性质找到该插入的地方插入
     if (!top)top = new binaryNode<T>(data);
     else
     {   binaryNode<T>* temp = search(data);
-        if (temp) {
+    if(!temp||temp->data==data) 
+    {
+        cout << "you have inserted same data in BST!" << endl; abort();
+    }
+    else{
             if (data > temp->data) 
             {
                 temp->rson = new binaryNode<T>(data);
@@ -241,7 +247,8 @@ template<typename T> binaryNode<T>* BST<T>::search(const T& data) {
     if (top->data == data)return top;
     binaryNode<T>* temp = root();
     while (is_exist(temp)) {
-        if (temp->data == data)return nullptr;
+        if (temp->data == data)
+            return nullptr;
         if (data > temp->data)
             if (temp->rson)
                 temp = temp->rson;
@@ -257,34 +264,41 @@ template<typename T> binaryNode<T>* BST<T>::search(const T& data) {
 int main()
 {
     BST<char>test;
-    test.insert({ 'S','E','X','A','C','R','V','Y'});
-   /* cout << test.MAX()->data<<test.MIN()->data;
-    cout << test.size() << test.height();
-     test.inorder_traverse(test.root());*/
+    test.insert({ 's','a','f','k','d','p','c','g'});
+    test.insert('z');
+    cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
-    test.remove('E');
+    test.remove('k');
+    cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
-    test.remove('S');
+    test.remove('a');
+    cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
-    test.remove('V');
+    test.remove('d');
+    cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
-    test.remove('X');
+    test.remove('p');
+    cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
-    test.remove('Y');
+    test.remove('s');
+    cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
-    test.remove('R');
+    test.remove('f');
+    cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
-    test.remove('A');
+    test.remove('g');
+    cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
-    test.remove('C');
+    test.remove('c');
+    cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
 
