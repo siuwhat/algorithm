@@ -1,5 +1,8 @@
 #pragma once
-#pragma once
+#ifndef NODE
+#define NODE
+
+
 template<class T>struct binaryNode {
 	binaryNode(T data, binaryNode<T>* father = NULL, binaryNode<T>* lson = NULL, binaryNode<T>* rson = NULL) :
 		father(father), lson(lson), rson(rson), data(data) {}
@@ -23,3 +26,5 @@ template<class T>struct binaryNode {
 	bool operator==(const binaryNode<T>* node) { return data == node->data; }*/
 
 };
+
+#endif 

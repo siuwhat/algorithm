@@ -1,12 +1,14 @@
-﻿
-#include <iostream>
-#include<string>
+﻿#include<string>
+#include<queue>
 #include<binaryNode.hpp>
+#include<traverse.hpp>
+#include<iostream>
 using namespace std;
 template<typename T>
 class BST {
 public:
     BST() { sz = hi = 0; top = NULL; }//初始化
+    using value_type = T;
     void insert(const T& data);
     void insert(const initializer_list<T>& data_list) { for (auto i : data_list)insert(i); }
     void remove(const T& data);
@@ -37,6 +39,7 @@ public:
         if (auto node = find_it(data))return node; else { cout << "we can't find it!"; abort(); }
     }
     //通过find_it(data)获得准确的节点在哪，如果为空，程序截止
+   
     ~BST() 
     {
         traverse(top);
@@ -264,7 +267,10 @@ template<typename T> binaryNode<T>* BST<T>::search(const T& data) {
 int main()
 {
     BST<char>test;
-    test.insert({ 's','a','f','k','d','p','c','g'});
+    test.insert({ 'E','B','F','A','D','C','H','G','I','K','J' });
+    traverse<decltype(test)>it(test);
+    it.print_tree();
+    /*test.insert({ 's','a','f','k','d','p','c','g'});
     test.insert('z');
     cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
@@ -301,6 +307,6 @@ int main()
     cout << " BST高度: " << test.height() << " BST元素个数: " << test.size() << endl;
     test.inorder_traverse(test.root());
     cout << endl;
-
+  */
 }
 
